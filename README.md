@@ -2,6 +2,8 @@
 
 A Supabase Realtime provider for Yjs, a high-performance CRDT for building collaborative applications that sync automatically.
 
+![](https://i.imgur.com/FgENXUU.gif)
+
 ## Disclaimer
 Please note that this package is currently in its early stages of development and ~~may~~ does have rough edges. Reliability is still being worked out. API will likely change dramatically. It is not recommended to use this in a production environment.
 
