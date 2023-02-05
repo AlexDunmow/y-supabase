@@ -113,6 +113,12 @@ License
 
 y-supabase is released under the MIT License. See LICENSE for more information.
 
+## Author
+
+y-supabase is developed and maintained by Alex Dunmow.
+
+Feel free to reach out with any questions or feedback via [email](mailto:alex@413x.tech) or [GitHub issues](https://github.com/AlexDunmow/y-supabase/issues)
+
 ## Contributing
 
 We welcome contributions to y-supabase! If you're interested in contributing, please check out our [contributing guidelines]("./CONTRIBUTIONS.md").
