@@ -1,6 +1,6 @@
 {
   "name": "y-supabase",
-  "version": "0.0.1-alpha",
+  "version": "0.0.2-alpha",
   "description": "Sync Yjs over supabase",
   "sideEffects": false,
   "main": "./src/y-supabase.ts",
