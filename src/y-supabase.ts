@@ -3,7 +3,6 @@ import { EventEmitter } from "events";
 import * as Y from "yjs";
 import * as awarenessProtocol from "y-protocols/awareness";
 
-import { createSyncStep1Message } from "./message-types";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { RealtimeChannel } from "@supabase/realtime-js";
 import { REALTIME_LISTEN_TYPES } from "@supabase/realtime-js/src/RealtimeChannel";
@@ -33,13 +32,11 @@ export default class SupabaseProvider extends EventEmitter {
 
   isOnline(online?: boolean): boolean {
     if (!online && online !== false) return this.connected;
-    console.log("ONLINE SETTING", online);
     this.connected = online;
     return this.connected;
   }
 
   onDocumentUpdate(update: Uint8Array, origin: any) {
-    console.log(origin, "origin", this, this.isOnline());
     if (origin !== this) {
       this.logger(
         "document updated locally, broadcasting update to peers",
@@ -139,13 +136,11 @@ export default class SupabaseProvider extends EventEmitter {
           }
         )
         .subscribe((status, err) => {
-          console.log("channel", status, err);
           if (status === "SUBSCRIBED") {
             this.emit("connect", this);
           }
 
           if (status === "CHANNEL_ERROR") {
-            console.log(status, this, err);
             console.error(err);
             this.emit("error", this);
           }
@@ -175,7 +170,6 @@ export default class SupabaseProvider extends EventEmitter {
     //this.doc = doc;
     this.id = doc.clientID;
 
-    console.log("connecting to supabase realtime", doc.guid);
     this.supabase = supabase;
     this.on("connect", this.onConnect);
     this.on("disconnect", this.onDisconnect);
@@ -184,11 +178,20 @@ export default class SupabaseProvider extends EventEmitter {
     this.logger.enabled = true;
     this.logger("constructor initializing");
 
-    if (this.config.resyncInterval || typeof this.config.resyncInterval === "undefined") {
+    this.logger("connecting to Supabase Realtime", doc.guid);
+
+    if (
+      this.config.resyncInterval ||
+      typeof this.config.resyncInterval === "undefined"
+    ) {
       if (this.config.resyncInterval && this.config.resyncInterval < 3000) {
-        throw new Error("resync interval of less than 3 seconds")
+        throw new Error("resync interval of less than 3 seconds");
       }
-      this.logger(`setting resync interval to every ${(this.config.resyncInterval || 5000) / 1000} seconds`);
+      this.logger(
+        `setting resync interval to every ${
+          (this.config.resyncInterval || 5000) / 1000
+        } seconds`
+      );
       this.resyncInterval = setInterval(() => {
         this.logger("resyncing (resync interval elapsed)");
         this.emit("message", Y.encodeStateAsUpdate(this.doc));
@@ -283,12 +286,12 @@ export default class SupabaseProvider extends EventEmitter {
   }
 
   public onAuth(message: Uint8Array) {
-    console.log(`received ${message.byteLength} bytes from peer: ${message}`);
+    this.logger(`received ${message.byteLength} bytes from peer: ${message}`);
 
     if (!message) {
       console.warn(`Permission denied to channel`);
     }
-    console.log("processed message (type = MessageAuth)");
+    this.logger("processed message (type = MessageAuth)");
   }
 
   public destroy() {
