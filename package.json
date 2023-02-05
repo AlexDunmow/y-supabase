@@ -3,7 +3,7 @@
   "version": "0.0.3-alpha",
   "description": "Sync Yjs over supabase",
   "sideEffects": false,
-  "main": "./src/y-supabase.ts",
+  "main": "./y-supabase.js",
   "files": [
     "lib/**/*"
   ],
