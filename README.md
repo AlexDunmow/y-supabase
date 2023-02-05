@@ -1,6 +1,6 @@
 # y-supabase
 
-A Supabase Realtime provider for Yjs, a high-performance CRDT for building collaborative applications that sync automatically.
+A Supabase Realtime provider for [Yjs](https://yjs.dev), a high-performance CRDT for building collaborative applications that sync automatically.
 
 ![](https://i.imgur.com/FgENXUU.gif)
 
