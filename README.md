@@ -48,6 +48,63 @@ const provider = new SupabaseProvider(yDoc, supabase, {
 })
 ```
 
+## Events
+
+The `SupabaseProvider` class emits the following events:
+
+- `message`: Emitted when a real-time update is received from Supabase. The update is passed as an argument.
+- `awareness`: Emitted when an awareness update is received. The update is passed as an argument.
+- `save`: Emitted after the local changes are saved to the database. The current version (local to the provider) is passed as an argument.
+- `status`: Emitted to update the connection status of Realtime. An array with an object containing the status is passed as an argument. Possible statuses are:
+  - `connected`
+  - `connecting`
+  - `disconnected`
+- `connect`: Emitted when a connection is established. The `SupabaseProvider` instance is passed as an argument.
+- `error`: Emitted when an error occurs. The `SupabaseProvider` instance is passed as an argument.
+- `disconnect`: Emitted when the connection is lost. The `SupabaseProvider` instance is passed as an argument.
+- `synced`: Emitted when the document is synced with the state from Supabase. The state is passed as an argument.
+- `sync`: Emitted when a sync event occurs. The state is passed as an argument.
+
+```typescript
+provider.on('message', (update) => {
+  console.log('Received real-time update:', update);
+});
+
+provider.on('awareness', (awarenessUpdate) => {
+  console.log('Received awareness update:', awarenessUpdate);
+});
+
+// version is local to the provider only, not a true version number
+provider.on('save', (version) => {
+  console.log('Document saved to database with version:', version);
+});
+
+provider.on('status', (status) => {
+  console.log('Connection status update:', status);
+});
+
+provider.on('connect', (providerInstance) => {
+  console.log('Connected:', providerInstance);
+});
+
+provider.on('error', (providerInstance) => {
+  console.error('Error:', providerInstance);
+});
+
+provider.on('disconnect', (providerInstance) => {
+  console.log('Disconnected:', providerInstance);
+});
+
+provider.on('synced', (state) => {
+  console.log('Synced with state:', state);
+});
+
+provider.on('sync', (state) => {
+  console.log('Sync event with state:', state);
+});
+```
+
+
 ## License
 
 License

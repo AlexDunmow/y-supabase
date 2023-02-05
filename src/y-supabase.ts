@@ -27,8 +27,7 @@ export default class SupabaseProvider extends EventEmitter {
   protected logger: debug.Debugger;
   public readonly id: number;
 
-  public unsyncedChanges = 0;
-  public lastMessageReceived = 0;
+  public version: number = 0;
 
   isOnline(online?: boolean): boolean {
     if (!online && online !== false) return this.connected;
@@ -43,6 +42,7 @@ export default class SupabaseProvider extends EventEmitter {
       this.save();
     }
   }
+
   onAwarenessUpdate({ added, updated, removed }: any, origin: any) {
     const changedClients = added.concat(updated).concat(removed);
     const awarenessUpdate = awarenessProtocol.encodeAwarenessUpdate(this.awareness, changedClients);
@@ -64,6 +64,8 @@ export default class SupabaseProvider extends EventEmitter {
     if (error) {
       throw error;
     }
+
+    this.emit('save', this.version);
   }
 
   private async onConnect() {
@@ -80,7 +82,7 @@ export default class SupabaseProvider extends EventEmitter {
     if (data && data[this.config.columnName]) {
       this.logger('applying update to yjs');
       try {
-        Y.applyUpdate(this.doc, Uint8Array.from(data[this.config.columnName]));
+        this.applyUpdate(Uint8Array.from(data[this.config.columnName]));
       } catch (error) {
         this.logger(error);
       }
@@ -95,6 +97,11 @@ export default class SupabaseProvider extends EventEmitter {
       const awarenessUpdate = awarenessProtocol.encodeAwarenessUpdate(this.awareness, [this.doc.clientID]);
       this.emit('awareness', awarenessUpdate);
     }
+  }
+
+  private applyUpdate(update: Uint8Array, origin?: any) {
+    this.version++;
+    Y.applyUpdate(this.doc, update, origin);
   }
 
   private disconnect() {
@@ -238,7 +245,7 @@ export default class SupabaseProvider extends EventEmitter {
   public onMessage(message: Uint8Array, origin: any) {
     if (!this.isOnline()) return;
     try {
-      Y.applyUpdate(this.doc, message, this);
+      this.applyUpdate(message, this);
     } catch (err) {
       this.logger(err);
     }
@@ -273,6 +280,6 @@ export default class SupabaseProvider extends EventEmitter {
     this.awareness.off('update', this.onAwarenessUpdate);
     this.doc.off('update', this.onDocumentUpdate);
 
-    if (this.channel) this.supabase.removeChannel(this.channel);
+    if (this.channel) this.disconnect();
   }
 }
