@@ -18,7 +18,7 @@ export interface SupabaseProviderConfig {
 }
 
 export default class SupabaseProvider extends EventEmitter {
-  private awareness: awarenessProtocol.Awareness;
+  public awareness: awarenessProtocol.Awareness;
   public connected = false;
   private channel: RealtimeChannel | null = null;
 
