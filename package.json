@@ -4,9 +4,9 @@
   "description": "Sync Yjs over supabase",
   "sideEffects": false,
   "main": "src/y-supabase.js",
-  "types": "lib/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
   "repository": {
     "type": "git",
