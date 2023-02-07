@@ -3,7 +3,8 @@
   "version": "0.0.4-6-alpha",
   "description": "Sync Yjs over supabase",
   "sideEffects": false,
-  "main": "src/y-supabase.ts",
+  "main": "src/y-supabase.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib/**/*"
   ],
@@ -25,7 +26,6 @@
     "@supabase/supabase-js": "^2.7.0",
     "debug": "^4.3.2",
     "events": "^3.3.0",
-    "lib0": "^0.2.42",
     "y-protocols": "^1.0.5",
     "y-supabase": "^0.0.4-4-alpha"
   },

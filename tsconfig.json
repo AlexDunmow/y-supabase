@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "lib": ["es2017", "es7", "es6", "dom"],
     "module": "commonjs",
     "declaration": true,
     "outDir": "./lib",
     "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "**/__tests__/*"]
+  "exclude": ["node_modules", "**/__tests__/*", "lib"]
 }
